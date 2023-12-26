@@ -1,0 +1,36 @@
+version: "3"
+services:
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    ports:
+      - '443:443'
+    volumes:
+      - wordpressfile:/var/www/html
+    depends_on:
+      - wordpress
+
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    ports:
+      - '3306:3306'
+    env_file:
+      - .env
+    volumes:
+      - mariadbvolumes:/var/lib/mysql
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    ports:
+      - 9000:9000
+    volumes:
+      - wordpressfile:/var/www/html
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+
+volumes:
+  wordpressfile:
+  mariadbvolumes:
