@@ -9,6 +9,8 @@ services:
       - wordpressfile:/var/www/html
     depends_on:
       - wordpress
+    networks:
+      - inception-net
 
   mariadb:
     build: ./requirements/mariadb
@@ -19,6 +21,9 @@ services:
       - .env
     volumes:
       - mariadbvolumes:/var/lib/mysql
+    networks:
+      - inception-net
+
   wordpress:
     build: ./requirements/wordpress
     container_name: wordpress
@@ -30,7 +35,22 @@ services:
       - .env
     depends_on:
       - mariadb
+    networks:
+      - inception-net
 
 volumes:
   wordpressfile:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mserrouk/data/wordpress
+      o: bind
   mariadbvolumes:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mserrouk/data/mariadb
+      o: bind
+networks:
+  inception-net:
+    driver: bridge

@@ -6,6 +6,6 @@ RUN openssl req -new -x509 -nodes  -keyout /etc/nginx/private.key -out /etc/ngin
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
-EXPOSE 443 
+EXPOSE 443
 
 CMD ["nginx" ,"-g", "daemon off;"]
